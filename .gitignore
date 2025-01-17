@@ -73,15 +73,13 @@ web/app/mu-plugins/*/
 # plugins. If you have custom plugins, you will need to explicitly exclude them
 # from this rule like this:
 # !web/app/plugins/my-plugin
-web/app/plugins/*
-!web/app/plugins/.gitkeep
+
 
 # Themes
 # We don't ignore all themes by default as these are most commonly where a
 # bulk of a site's custom code may be. However, we do ignore all of the
 # twenty-* themes by default. Any other Composer-managed themes should be
 # added to this list.
-web/app/themes/twenty*
 
 # Other WordPress files and directories
 # Any other files or directories that should not be version controlled go here.
