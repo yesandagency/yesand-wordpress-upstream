@@ -78,7 +78,12 @@ class ITSEC_SSL {
 			return set_url_scheme( wp_validate_redirect( home_url( $_SERVER['REQUEST_URI'] ), home_url() ), 'https' );
 		} );
 
-		$redirect = "https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+		if ( isset( $_SERVER['HTTP_HOST'] ) ) {
+			$redirect = "https://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+		} else {
+			$redirect = set_url_scheme( wp_validate_redirect( home_url( $_SERVER['REQUEST_URI'] ), home_url() ), 'https' );
+		}
+		
 		wp_safe_redirect( $redirect, 301, 'Solid Security' );
 		exit();
 	}

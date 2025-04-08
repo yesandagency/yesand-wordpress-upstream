@@ -1,0 +1,47 @@
+{
+  "name": "pantheon-systems/pantheon-advanced-page-cache",
+  "type": "wordpress-plugin",
+  "authors": [
+    {
+      "name": "Pantheon",
+      "email": "noreply@pantheon.io"
+    }
+  ],
+  "require-dev": {
+    "behat/behat": "^3.1",
+    "behat/mink-extension": "^2.2",
+    "behat/mink-goutte-driver": "^1.2",
+    "pantheon-systems/pantheon-wordpress-upstream-tests": "dev-master",
+    "phpunit/phpunit": "^9",
+    "phpcompatibility/php-compatibility": "^9.3",
+    "yoast/phpunit-polyfills": "^2.0",
+    "pantheon-systems/pantheon-wp-coding-standards": "^2.0",
+    "pantheon-systems/wpunit-helpers": "^2.0"
+  },
+  "scripts": {
+    "fix-perms": "chmod +x ./bin/*.sh",
+    "post-update-cmd": [
+      "@fix-perms"
+    ],
+    "post-install-cmd": [
+      "@fix-perms"
+    ],
+    "lint": [
+      "@phpcs",
+      "@phplint"
+    ],
+    "phpcs": "vendor/bin/phpcs -s .",
+    "phpcbf": "vendor/bin/phpcbf .",
+    "phplint": "find . -type f -name '*.php' -not -path './vendor/*' -not -path './tests/*' -exec php -l {} \\;",
+    "phpunit": "vendor/bin/phpunit --do-not-cache-result",
+    "test": "@phpunit",
+    "test:install": "bin/install-local-tests.sh --skip-db=true",
+    "test:install:withdb": "bin/install-local-tests.sh"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "pantheon-systems/wpunit-helpers": true
+    }
+  }
+}

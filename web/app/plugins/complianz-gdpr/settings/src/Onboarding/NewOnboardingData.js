@@ -49,13 +49,6 @@ const suggestedPlugins = [
 		'processing': false,
 	},
 	{
-		'slug': 'burst-statistics',
-		'premium': 'burst-pro',
-		'description': __("Privacy-friendly Analytics? Get started", "complianz-gdpr"),
-		'status': 'not-installed',
-		'processing': false,
-	},
-	{
 		'slug': 'really-simple-ssl',
 		'description': __("Really Simple Security? Let’s go", "complianz-gdpr"),
 		'status': 'not-installed',
@@ -202,10 +195,7 @@ const useNewOnboardingData = create((set, get) => ({
 	// close modal
 	closeModal: async (dismissed) => {
 		if (dismissed) {
-			const response = await cmplz_api.doAction('dismiss_wsc_onboarding');
-			if (!response.request_success) {
-				throw new Error(`Error fetching.`)
-			}
+			get().skipStep('onboarding');
 		}
 
 		const url = new URL(window.location.href);
@@ -213,10 +203,22 @@ const useNewOnboardingData = create((set, get) => ({
 		window.history.pushState({}, '', url.href);
 		set({ isModalOpen: false })
 	},
+	skipStep: async (step) => {
+		const response = await cmplz_api.doAction('dismiss_wsc_onboarding', { step });
+		if (!response.request_success) {
+			throw new Error(`Error fetching.`)
+		}
+	},
 	//
 	// buttons actions
 	goToPrevStep: () => set((state) => { // prev step or skip
 		const newStep = state.currentStep === 'welcome' ? 'newsletter' : steps[state.currentStep].prevButtonGoTo;
+
+		if (newStep === 'newsletter' || newStep === 'plugins') {
+			const step = newStep === 'newsletter' ? 'websitescan' : 'newsletter';
+			get().skipStep(step);
+		}
+
 		// const enableWsc = state.currentStep === 'welcome' && newStep !== 'newsletter';
 		// return { ...state, currentStep: newStep, stepProcessing: false, enableWsc };
 		return { ...state, currentStep: newStep, stepProcessing: false };
@@ -305,7 +307,7 @@ const useNewOnboardingData = create((set, get) => ({
 	isValidEmail: (email) => {
 		// enable if the email is mandatory to proceed but if yes skip the terms and conditions step
 		if (email.length === 0) return true;
-		const regex = /^[\w-]+(\.[\w-]+)*@[^\s@]+\.[a-zA-Z]{2,}$/;
+		const regex = /^[\w.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 		return regex.test(email);
 	},

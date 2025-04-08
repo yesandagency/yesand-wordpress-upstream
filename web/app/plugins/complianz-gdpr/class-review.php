@@ -76,7 +76,7 @@ if ( ! class_exists( "cmplz_review" ) ) {
 				 style="border-left:4px solid #333">
 				<div class="cmplz-container" style="display:flex">
 					<div class="cmplz-review-image" style="padding:20px 10px"><img width=80px"
-																			  src="<?php echo cmplz_url ?>assets/images/icon-logo.svg"
+																			  src="<?php echo CMPLZ_URL ?>assets/images/icon-logo.svg"
 																			  alt="review-logo">
 					</div>
 					<div style="margin-left:30px">

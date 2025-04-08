@@ -6,11 +6,11 @@ defined('ABSPATH') or die();
  *
  * @since 1.0.0
  */
-require_once( cmplz_path . 'settings/config/menu.php' );
-require_once( cmplz_path . 'settings/config/blocks.php' );
-require_once( cmplz_path . 'settings/wizard.php' );
-require_once( cmplz_path . 'settings/config/fields-notices.php' );
-require_once( cmplz_path . 'settings/media/wp_enqueue_media_override.php');
+require_once( CMPLZ_PATH . 'settings/config/menu.php' );
+require_once( CMPLZ_PATH . 'settings/config/blocks.php' );
+require_once( CMPLZ_PATH . 'settings/wizard.php' );
+require_once( CMPLZ_PATH . 'settings/config/fields-notices.php' );
+require_once( CMPLZ_PATH . 'settings/media/wp_enqueue_media_override.php');
 /**
  * Fix for WPML issue where WPML breaks the rest api by adding a language locale in the url
  *
@@ -152,7 +152,7 @@ add_action('admin_footer', 'cmplz_fix_duplicate_menu_item');
  */
 function cmplz_get_chunk_translations() {
 	//get all files from the settings/build folder
-	$files = scandir(cmplz_path . 'settings/build');
+	$files = scandir(CMPLZ_PATH . 'settings/build');
 	$json_translations = [];
 	foreach ($files as $file) {
 		if (strpos($file, '.js') === false) {
@@ -162,7 +162,7 @@ function cmplz_get_chunk_translations() {
 		$chunk_handle = str_replace('.js', '', $file );
 		//temporarily register the script, so we can get a translations object.
 		wp_register_script( $chunk_handle, plugins_url('build/'.$file, __FILE__), [], true );
-		$path = defined('cmplz_premium') ? cmplz_path . 'languages' : false;
+		$path = defined('cmplz_premium') ? CMPLZ_PATH . 'languages' : false;
 		$localeData = load_script_textdomain( $chunk_handle, 'complianz-gdpr', $path );
 		if ( !empty($localeData) ){
 			$json_translations[] = $localeData;
@@ -224,7 +224,7 @@ function cmplz_plugin_admin_scripts() {
 								admin_url( 'admin-ajax.php' ) ),
 						'dashboard_url'     => cmplz_admin_url(),
 						'upgrade_link'      => 'https://complianz.io/pricing',
-						'plugin_url'        => cmplz_url,
+						'plugin_url'        => CMPLZ_URL,
 						'license_url'      =>  is_multisite() ? cmplz_main_site_url('#settings/license') : '#settings/license',
 						'blocks'            => cmplz_blocks(),
 						'is_premium'        => defined( 'cmplz_premium' ),
@@ -235,7 +235,7 @@ function cmplz_plugin_admin_scripts() {
 						'user_id'           => get_current_user_id(),
                         'is_multisite'      => is_multisite(),
                         'is_multisite_plugin'=> defined('cmplz_premium_multisite'),
-						'onboarding_complete' => get_option('cmplz_onboarding_dismissed'),
+						'onboarding_complete' => COMPLIANZ::$wsc_onboarding->wsc_is_dismissed(),
 				] )
 		);
 	}
@@ -295,7 +295,7 @@ function cmplz_add_option_menu() {
 			apply_filters('cmplz_capability','manage_privacy'),
 			'complianz',
 			'cmplz_settings_page',
-			cmplz_url . 'assets/images/menu-icon.svg',
+			CMPLZ_URL . 'assets/images/menu-icon.svg',
 			CMPLZ_MAIN_MENU_POSITION
 	);
 
@@ -593,7 +593,7 @@ function cmplz_plugin_actions($request){
 	$slug = $request->get_param('slug');
 	$action = $request->get_param('pluginAction');
 	if ( $action==='download' || $action==='activate' ) {
-		require_once(cmplz_path . 'class-installer.php');
+		require_once(CMPLZ_PATH . 'class-installer.php');
 		$installer = new cmplz_installer($slug);
 	}
 
@@ -616,15 +616,6 @@ function cmplz_other_plugins_data($slug=false){
 	}
 	$plugins = array(
 		[
-			'slug' => 'burst-statistics',
-			'constant_free' => 'burst_free',
-			'constant_premium' => 'burst_pro',
-			'website' => 'https://burst-statistics.com/pricing?src=complianz-plugin',
-			'wordpress_url' => 'https://wordpress.org/plugins/burst-statistics/',
-			'upgrade_url' => 'https://burst-statistics.com/pricing?src=cmplz-plugin',
-			'title' => 'Burst Statistics - '. __("Self-hosted and privacy-friendly analytics tool.", "complianz-gdpr"),
-		],
-		[
 			'slug' => 'really-simple-ssl',
 			'constant_free' => 'rsssl_version',
 			'constant_premium' => 'rsssl_pro',
@@ -644,7 +635,7 @@ function cmplz_other_plugins_data($slug=false){
 
     foreach ($plugins as $index => $plugin ){
 		$star_rating = false;
-		require_once(cmplz_path . 'class-installer.php');
+		require_once(CMPLZ_PATH . 'class-installer.php');
 		$installer = new cmplz_installer($plugin['slug']);
 		#if slug defined, get star rating as well
 		if ( $slug ) {

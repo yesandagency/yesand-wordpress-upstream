@@ -18,12 +18,12 @@ if (!class_exists("cmplz_wsc")) {
 		protected $auth;
 		protected $logger;
 
-		const WSC_RELEASE_DATE = 'september 18 2024';
-		const WSC_ONBOARDING_PERIOD = 6;
 		// any changes on this constants should be reflected on the react application
 		const WSC_EMAIL_OPTION_KEY = 'cmplz_wsc_email';
 		const WSC_CLIENT_ID_OPTION_KEY = 'cmplz_wsc_client_id';
 		const WSC_CLIENT_SECRET_OPTION_KEY = 'cmplz_wsc_client_secret';
+		const WSC_OPT_ONBOARDING_DATE = 'cmplz_wsc_onboarding_start';
+		const WSC_ONBOARDING_STAGED_END = 'april 30 2025';
 
 
 		/**

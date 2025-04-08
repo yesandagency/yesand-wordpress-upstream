@@ -110,7 +110,8 @@ function cmplz_settings_fields($fields){
 			'group_id' => 'settings-cd',
 			'type'     => 'checkbox',
 			'default'  => false,
-			'label'    => __( "Disable the monthly site scan, and subsequent sync with cookiedatabase.org.", "complianz-gdpr" ),
+			'label'    => __( "Disable the monthly site scan, subsequent sync with cookiedatabase.org and compliance reporting.", "complianz-gdpr" ),
+			'tooltip'  => __('Stay up-to-date with our monthly newsletter, including the onboarding of certain features and information about plugin changes.', 'comlpianz-gdpr')
 		],
 		[
 			'id'       => 'enable_cookieblocker_ajax',

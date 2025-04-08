@@ -16,7 +16,7 @@ if ( ! class_exists( "cmplz_admin" ) ) {
 			self::$_this = $this;
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 
-			$plugin = cmplz_plugin;
+			$plugin = CMPLZ_PLUGIN;
 			add_filter( "plugin_action_links_$plugin", array( $this, 'plugin_settings_link' ) );
 			add_action( "in_plugin_update_message-{$plugin}", array( $this, 'plugin_update_message'), 10, 2 );
 			//add_filter( "auto_update_plugin", array( $this, 'override_auto_updates'), 99, 2 );
@@ -207,8 +207,8 @@ if ( ! class_exists( "cmplz_admin" ) ) {
 			}
 			$min = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 			$rtl = is_rtl() ? 'rtl/' : '';
-			$url = trailingslashit(cmplz_url) . "assets/css/{$rtl}admin{$min}.css";
-			$path = trailingslashit(cmplz_path) . "assets/css/{$rtl}admin{$min}.css";
+			$url = trailingslashit(CMPLZ_URL) . "assets/css/{$rtl}admin{$min}.css";
+			$path = trailingslashit(CMPLZ_PATH) . "assets/css/{$rtl}admin{$min}.css";
 			wp_enqueue_style( 'complianz-admin', $url, ['wp-components'], filemtime($path) );
 		}
 
@@ -337,7 +337,7 @@ if ( ! class_exists( "cmplz_admin" ) ) {
 				 style="border-left:4px solid #333">
 				<div class="cmplz-admin-notice-container">
 					<div class="cmplz-admin-notice-logo"><img width=80px"
-															  src="<?php echo cmplz_url ?>assets/images/icon-logo.svg"
+															  src="<?php echo CMPLZ_URL ?>assets/images/icon-logo.svg"
 															  alt="logo">
 					</div>
 					<div class="cmplz-admin-notice-content">

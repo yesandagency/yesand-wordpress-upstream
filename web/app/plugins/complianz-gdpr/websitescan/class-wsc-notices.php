@@ -110,10 +110,15 @@ if (!class_exists("cmplz_wsc_notices")) {
 		 *
 		 * @return array
 		 */
-		function wsc_scan_add_warnings(array $warnings): array
-		{
-			// if not authenticated
-			if (cmplz_wsc_auth::wsc_is_authenticated()){
+		public function wsc_scan_add_warnings(array $warnings): array {
+			$wsc_checks_warnings = $this->retrieve_wsc_checks_warnings();
+
+			if ( is_array( $wsc_checks_warnings ) && count( $wsc_checks_warnings ) > 0 ) {
+				$warnings = array_merge( $warnings, $wsc_checks_warnings );
+			}
+
+			// if not authenticated.
+			if ( cmplz_wsc_auth::wsc_is_authenticated() ) {
 				return $warnings;
 			}
 
@@ -124,6 +129,42 @@ if (!class_exists("cmplz_wsc_notices")) {
 				'open' => __('You have a new feature! To enable the new and improved Website Scan you need to authenticate your website.', 'complianz-gdpr'),
 				'url' => '#settings/settings-cd',
 			);
+
+			return $warnings;
+		}
+
+		/**
+		 * Retrieve warnings from the WSC checks.
+		 *
+		 * This method retrieves the warnings from the WSC checks by fetching the detections,
+		 * checking if they match the notification blocks for the current Complianz version,
+		 * and then creating an array of warnings based on these detections.
+		 *
+		 * @return array The array of warnings retrieved from the WSC checks.
+		 */
+		private function retrieve_wsc_checks_warnings(): array {
+			$warnings   = array();
+			$detections = COMPLIANZ::$wsc_scanner->wsc_checks_retrieve_detections();
+
+			if ( is_array( $detections ) && count( $detections ) > 0 ) {
+				$blocks        = COMPLIANZ::$wsc_scanner->wsc_checks_notification_blocks();
+				$cmplz_version = COMPLIANZ::$wsc_scanner->get_cmplz_version();
+
+				foreach ( $detections as $detection ) {
+					if ( isset( $blocks[ $detection['block'] ][ $cmplz_version ] ) ) {
+
+						$block = $blocks[ $detection['block'] ][ $cmplz_version ];
+
+						$warnings[ 'wsc-scan_' . $detection['block'] ] = array(
+							'plus_one'          => false,
+							'dismissible'       => true,
+							'warning_condition' => '_true_',
+							$block['type']      => COMPLIANZ::$wsc_scanner->wsc_checks_notification_generate_block_description( $block, $detection, true ),
+							'url'               => $block['read_more'],
+						);
+					}
+				}
+			}
 
 			return $warnings;
 		}

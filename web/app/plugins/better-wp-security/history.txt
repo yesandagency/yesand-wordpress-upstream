@@ -1092,3 +1092,6 @@
 	Bug Fix: PHP warning about translations being loaded too early.
 9.3.6 - 2024-12-04 - Timothy Jacobs
 	Enhancement: Better surface Login Security features during onboarding.
+9.3.7 - 2025-03-24 - Timothy Jacobs, Zach Tirrell
+	Enhancement: Use block API Version 3 for the Security Profile block.
+	Bug Fix: PHP warning when HTTP_HOST not set.

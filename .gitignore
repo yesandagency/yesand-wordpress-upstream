@@ -12,6 +12,7 @@ web/app/upgrade
 web/app/uploads/*
 !web/app/uploads/.gitkeep
 web/app/cache/*
+auth.json
 
 # WordPress is installed in web/wp so that it can be fully managed by Composer.
 # This ensures that the WordPress directory is clean and doesn't contain any

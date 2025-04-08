@@ -92,7 +92,7 @@ if (!class_exists("cmplz_wsc_auth")) {
 					update_option('cmplz_wsc_status', 'pending', false);
 					update_option('cmplz_wsc_signup_date', time(), false);
 					delete_option('cmplz_wsc_error_email_not_sent');
-					delete_option('cmplz_wsc_onboarding_start');
+					delete_option( cmplz_wsc::WSC_OPT_ONBOARDING_DATE );
 				} else {
 					$response_message = wp_remote_retrieve_response_message($request);
 					if (WP_DEBUG) {
@@ -538,8 +538,7 @@ if (!class_exists("cmplz_wsc_auth")) {
 			$request = wp_remote_get($wsc_cb_endpoint);
 
 			if (is_wp_error($request)) {
-				// @todo add wsc_logger
-				error_log('wsc_api_open: ' . $request->get_error_message());
+				cmplz_wsc_logger::log_errors( 'wsc_api_open', $request->get_error_message() );
 				return false;
 			}
 
@@ -600,16 +599,23 @@ if (!class_exists("cmplz_wsc_auth")) {
 		}
 
 		/**
-		 * Checks if the user is authenticated.
+		 * Checks if the WSC (Website Scan) is authenticated.
 		 *
-		 * This function retrieves the 'cmplz_wsc_auth_completed' option to determine
-		 * if the user has completed the onboarding/authentication.
+		 * This method verifies if the WSC is authenticated by checking if the client ID and client secret
+		 * are stored in the options. If either the client ID or client secret is empty, it returns false.
+		 * Otherwise, it returns true indicating that the WSC is authenticated.
 		 *
-		 * @return bool True if authenticated, false otherwise.
+		 * @return bool Returns true if the WSC is authenticated, false otherwise.
 		 */
-		public static function wsc_is_authenticated(): bool
-		{
-			return get_option('cmplz_wsc_auth_completed', false);
+		public static function wsc_is_authenticated(): bool {
+			$client_id     = (string) cmplz_get_option( cmplz_wsc::WSC_CLIENT_ID_OPTION_KEY );
+			$client_secret = (string) cmplz_get_option( cmplz_wsc::WSC_CLIENT_SECRET_OPTION_KEY );
+
+			if ( empty( $client_id ) || empty( $client_secret ) ) {
+				return false;
+			}
+
+			return true;
 		}
 	}
 }

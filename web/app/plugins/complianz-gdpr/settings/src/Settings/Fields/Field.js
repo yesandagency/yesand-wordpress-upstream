@@ -167,7 +167,7 @@ const COMPONENT_MAP = {
 		componentPath: 'Settings/CookieBannerPreview/BannerLogoControl',
 	},
 	'support': {
-		componentPath: 'Settings/Support',
+		componentPath: 'Settings/Support/Support',
 	},
 	'security_measures': {
 		componentPath: 'Settings/SecurityMeasures/SecurityMeasures',

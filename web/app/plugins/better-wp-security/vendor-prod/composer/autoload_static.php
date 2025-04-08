@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit30f4a1a7f1523625c670c10bf8b5f4ec
+class ComposerStaticInit21d5536de7b0f1825cc8669e43c80018
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -76,9 +76,9 @@ class ComposerStaticInit30f4a1a7f1523625c670c10bf8b5f4ec
     );
 
     public static $classMap = array (
-        'ComposerAutoloaderInit30f4a1a7f1523625c670c10bf8b5f4ec' => __DIR__ . '/..' . '/composer/autoload_real.php',
+        'ComposerAutoloaderInit21d5536de7b0f1825cc8669e43c80018' => __DIR__ . '/..' . '/composer/autoload_real.php',
         'Composer\\Autoload\\ClassLoader' => __DIR__ . '/..' . '/composer/ClassLoader.php',
-        'Composer\\Autoload\\ComposerStaticInit30f4a1a7f1523625c670c10bf8b5f4ec' => __DIR__ . '/..' . '/composer/autoload_static.php',
+        'Composer\\Autoload\\ComposerStaticInit21d5536de7b0f1825cc8669e43c80018' => __DIR__ . '/..' . '/composer/autoload_static.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'ITSEC_Admin_Notice' => __DIR__ . '/../..' . '/core/lib/admin-notices/interface-itsec-admin-notice.php',
         'ITSEC_Admin_Notice_Action' => __DIR__ . '/../..' . '/core/lib/admin-notices/actions/interface-itsec-admin-notice-action.php',
@@ -297,7 +297,7 @@ class ComposerStaticInit30f4a1a7f1523625c670c10bf8b5f4ec
         'Two_Factor_Email' => __DIR__ . '/../..' . '/core/modules/two-factor/providers/class.two-factor-email.php',
         'Two_Factor_Provider' => __DIR__ . '/../..' . '/core/modules/two-factor/providers/class.two-factor-provider.php',
         'Two_Factor_Totp' => __DIR__ . '/../..' . '/core/modules/two-factor/providers/class.two-factor-totp.php',
-        'Your\\Namespace\\Container' => __DIR__ . '/..' . '/stellarwp/container-contract/examples/di52/Container.php',
+        'Your\\Namespace\\Container' => __DIR__ . '/..' . '/stellarwp/container-contract/examples/php-di/Container.php',
         'iThemesSecurity\\Actor\\Actor' => __DIR__ . '/../..' . '/core/lib/actor/Actor.php',
         'iThemesSecurity\\Actor\\Actor_Factory' => __DIR__ . '/../..' . '/core/lib/actor/Actor_Factory.php',
         'iThemesSecurity\\Actor\\Import' => __DIR__ . '/../..' . '/core/lib/actor/Import.php',
@@ -555,10 +555,10 @@ class ComposerStaticInit30f4a1a7f1523625c670c10bf8b5f4ec
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit30f4a1a7f1523625c670c10bf8b5f4ec::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit30f4a1a7f1523625c670c10bf8b5f4ec::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit30f4a1a7f1523625c670c10bf8b5f4ec::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit30f4a1a7f1523625c670c10bf8b5f4ec::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit21d5536de7b0f1825cc8669e43c80018::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit21d5536de7b0f1825cc8669e43c80018::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit21d5536de7b0f1825cc8669e43c80018::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit21d5536de7b0f1825cc8669e43c80018::$classMap;
 
         }, null, ClassLoader::class);
     }

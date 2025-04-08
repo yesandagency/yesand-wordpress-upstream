@@ -101,11 +101,13 @@ if (!class_exists("cmplz_wsc_settings")) {
 
 			$updated_wsc_status = get_option('cmplz_wsc_status'); // Website Scan status
 			$wsc_signup_date = get_option('cmplz_wsc_signup_date') ? get_option('cmplz_wsc_signup_date') : false;
+			$wsc_lock = COMPLIANZ::$wsc_onboarding->wsc_locked();
 
 			return [
 				'token_status' => $token_status, // token status
 				'wsc_status' => $updated_wsc_status,
-				'wsc_signup_date' => $wsc_signup_date
+				'wsc_signup_date' => $wsc_signup_date,
+				'wsc_lock' => $wsc_lock,
 			];
 		}
 
@@ -385,10 +387,7 @@ if (!class_exists("cmplz_wsc_settings")) {
 				'cmplz_wsc_error_missing_token',
 				'cmplz_wsc_error_email_auth_failed',
 				'cmplz_wsc_error_email_not_sent',
-				'cmplz_wsc_error_token_api',
-				// onboarding date
-				'cmplz_wsc_onboarding_start',
-				// token
+				// token.
 				'cmplz_wsc_error_token_api',
 				'cmplz_wsc_connection_updated',
 				'cmplz_wsc_onboarding_status',
@@ -398,6 +397,8 @@ if (!class_exists("cmplz_wsc_settings")) {
 				'cmplz_wsc_scan_iteration',
 				'cmplz_wsc_scan_progress',
 				'cmplz_wsc_scan_first_run',
+				// onboarding date.
+				cmplz_wsc::WSC_OPT_ONBOARDING_DATE,
 			];
 
 			$cmplz_options = [

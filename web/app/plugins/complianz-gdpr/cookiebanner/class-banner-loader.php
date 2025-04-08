@@ -15,11 +15,11 @@ if ( ! class_exists( "cmplz_banner_loader" ) ) {
 			self::$_this = $this;
 			if ( ! is_admin() && !cmplz_is_pagebuilder_preview() ) {
 				if ( get_option( 'cmplz_wizard_completed_once' ) && $this->site_needs_cookie_warning() ) {
-					add_action( 'wp_print_footer_scripts', array( $this, 'inline_cookie_script' ), PHP_INT_MAX - 50 );
 					add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ), PHP_INT_MAX - 50 );
 					add_filter( 'script_loader_tag', array( $this, 'add_asyncdefer_attribute' ), 10, 2 );
 					add_action( 'wp_head', array( $this, 'cookiebanner_css' ) );
 					add_action( 'wp_footer', array( $this, 'cookiebanner_html' ) );
+                    $this->dynamic_gtm_enqueue();
 				} else {
 					add_action( 'wp_print_footer_scripts', array( $this, 'inline_cookie_script_no_warning' ), 10, 2 );
 				}
@@ -40,6 +40,16 @@ if ( ! class_exists( "cmplz_banner_loader" ) ) {
 		static function this() {
 			return self::$_this;
 		}
+
+        public function dynamic_gtm_enqueue() {
+			if (cmplz_get_option('gtm_code_head') === 'yes') {
+				$hook = cmplz_get_option('gtm_code_head') ? 'wp_head' : 'wp_print_footer_scripts';
+				$hookPriority = cmplz_get_option('gtm_code_head') ? 0 : PHP_INT_MAX - 50;
+				add_action($hook, array($this, 'inline_cookie_script'), $hookPriority);
+			} else {
+				add_action( 'wp_print_footer_scripts', array( $this, 'inline_cookie_script' ), PHP_INT_MAX - 50 );
+			}
+        }
 
 		public function wizard_completed_once() {
 			return get_option( 'cmplz_wizard_completed_once' );
@@ -299,11 +309,11 @@ if ( ! class_exists( "cmplz_banner_loader" ) ) {
 			}
 			if ( cmplz_uses_thirdparty( 'instagram' ) && get_option( 'cmplz_post_scribe_required' ) ) {
 				$deps[] = 'cmplz-postscribe';
-				$v      = filemtime( cmplz_path . "assets/js/postscribe.min.js" );
-				wp_enqueue_script( 'cmplz-postscribe', cmplz_url . "assets/js/postscribe.min.js", array( 'jquery' ), $v, true );
+				$v      = filemtime( CMPLZ_PATH . "assets/js/postscribe.min.js" );
+				wp_enqueue_script( 'cmplz-postscribe', CMPLZ_URL . "assets/js/postscribe.min.js", array( 'jquery' ), $v, true );
 			}
-			$v = filemtime( cmplz_path . "cookiebanner/js/complianz$minified.js" );
-			wp_enqueue_script( 'cmplz-cookiebanner', cmplz_url . "cookiebanner/js/complianz$minified.js", $deps, $v, true );
+			$v = filemtime( CMPLZ_PATH . "cookiebanner/js/complianz$minified.js" );
+			wp_enqueue_script( 'cmplz-cookiebanner', CMPLZ_URL . "cookiebanner/js/complianz$minified.js", $deps, $v, true );
 			wp_localize_script( 'cmplz-cookiebanner', 'complianz', $cookiesettings );
 		}
 
@@ -347,7 +357,7 @@ if ( ! class_exists( "cmplz_banner_loader" ) ) {
 
 			$consent_types           = cmplz_get_used_consenttypes();
 			$banner_ids              = cmplz_ab_testing_enabled() ? wp_list_pluck( cmplz_get_cookiebanners(), 'ID' ) : [ cmplz_get_default_banner_id() ];
-			$path                    = trailingslashit( cmplz_path ) . 'cookiebanner/templates/';
+			$path                    = trailingslashit( CMPLZ_PATH ) . 'cookiebanner/templates/';
 			$manage_consent_template = cmplz_get_template( "manage-consent.php", false, $path );
 			$banner_html             = '';
 			$manage_consent_html     = '';

@@ -74,7 +74,6 @@ if (isset($cmplz_settings['clear_data_on_uninstall']) && $cmplz_settings['clear_
         'cmplz_license_key',
         'cmplz_license_notice_dismissed',
         'cmplz_license_status',
-        'cmplz_onboarding_dismissed',
         'cmplz_options',
         'cmplz_pdf_dir_token',
         'cmplz_plugins_changed',
@@ -128,15 +127,22 @@ if (isset($cmplz_settings['clear_data_on_uninstall']) && $cmplz_settings['clear_
         'cmplz_wsc_onboarding_status',
         'cmplz_wsc_onboarding_start',
         'cmplz_wsc_onboarding_complete',
+		'cmplz_wsc_onboarding_dismissed',
+		'cmplz_wsc_websitescan_dismissed',
 		'cmplz_wsc_scan_id',
 		'cmplz_wsc_scan_createdAt',
 		'cmplz_wsc_scan_status',
 		'cmplz_wsc_scan_iteration',
 		'cmplz_wsc_scan_progress',
-		'cmplz_wsc_onboarding_dismissed',
 		'cmplz_wsc_scan_first_run',
 		'cmplz_wsc_reset_complete',
-    ];
+		'cmplz_wsc_checks_scan_polling',
+		'cmplz_wsc_checks_scan_id',
+		'cmplz_wsc_checks_scan_createdAt',
+		'cmplz_wsc_checks_last_detections',
+		'cmplz_wsc_checks_last_mail_sent',
+		'cmplz_wsc_checks_last_mail_sent_error',
+	];
 
 
     foreach ($options as $option_name) {

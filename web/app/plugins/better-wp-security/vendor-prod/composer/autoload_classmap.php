@@ -6,9 +6,9 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'ComposerAutoloaderInit30f4a1a7f1523625c670c10bf8b5f4ec' => $vendorDir . '/composer/autoload_real.php',
+    'ComposerAutoloaderInit21d5536de7b0f1825cc8669e43c80018' => $vendorDir . '/composer/autoload_real.php',
     'Composer\\Autoload\\ClassLoader' => $vendorDir . '/composer/ClassLoader.php',
-    'Composer\\Autoload\\ComposerStaticInit30f4a1a7f1523625c670c10bf8b5f4ec' => $vendorDir . '/composer/autoload_static.php',
+    'Composer\\Autoload\\ComposerStaticInit21d5536de7b0f1825cc8669e43c80018' => $vendorDir . '/composer/autoload_static.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'ITSEC_Admin_Notice' => $baseDir . '/core/lib/admin-notices/interface-itsec-admin-notice.php',
     'ITSEC_Admin_Notice_Action' => $baseDir . '/core/lib/admin-notices/actions/interface-itsec-admin-notice-action.php',
@@ -227,7 +227,7 @@ return array(
     'Two_Factor_Email' => $baseDir . '/core/modules/two-factor/providers/class.two-factor-email.php',
     'Two_Factor_Provider' => $baseDir . '/core/modules/two-factor/providers/class.two-factor-provider.php',
     'Two_Factor_Totp' => $baseDir . '/core/modules/two-factor/providers/class.two-factor-totp.php',
-    'Your\\Namespace\\Container' => $vendorDir . '/stellarwp/container-contract/examples/di52/Container.php',
+    'Your\\Namespace\\Container' => $vendorDir . '/stellarwp/container-contract/examples/php-di/Container.php',
     'iThemesSecurity\\Actor\\Actor' => $baseDir . '/core/lib/actor/Actor.php',
     'iThemesSecurity\\Actor\\Actor_Factory' => $baseDir . '/core/lib/actor/Actor_Factory.php',
     'iThemesSecurity\\Actor\\Import' => $baseDir . '/core/lib/actor/Import.php',

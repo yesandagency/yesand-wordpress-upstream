@@ -36,6 +36,44 @@ if (!class_exists("cmplz_wsc_api")) {
 				'callback' => array($this, 'wsc_scan_webhook_callback'),
 				'permission_callback' => '__return_true',
 			));
+			register_rest_route(
+				'complianz/v1',
+				'wsc-checks',
+				array(
+					'methods'             => 'POST', // Accept only POST requests.
+					'callback'            => array( $this, 'wsc_scan_webhook_checks_callback' ),
+					'permission_callback' => '__return_true',
+				)
+			);
+		}
+
+
+		/**
+		 * Handle the WSC scan webhook checks callback.
+		 *
+		 * This function processes the WSC scan webhook checks callback. It validates the request
+		 * and then processes the scan checks. If the request is invalid, an error is returned.
+		 *
+		 * @param WP_REST_Request $request The REST API request object.
+		 * @return WP_REST_Response|WP_Error The REST API response object or an error object.
+		 */
+		public function wsc_scan_webhook_checks_callback( WP_REST_Request $request ) {
+			$error            = self::wsc_scan_validate_request( $request, 'checks' );
+			$is_valid_request = empty( $error );
+
+			if ( ! $is_valid_request ) { // if the array is not empty, contains an error and the request is invalid.
+				return new WP_Error(
+					$error['code'],
+					$error['message'],
+					array( 'status' => $error['status'] )
+				);
+			}
+
+			$result = json_decode( $request->get_body() );
+
+			COMPLIANZ::$wsc_scanner->wsc_scan_process_checks( $result );
+
+			return new WP_REST_Response( 'Checks updated!', 200 );
 		}
 
 
@@ -50,7 +88,7 @@ if (!class_exists("cmplz_wsc_api")) {
 		 */
 		public function wsc_scan_webhook_callback(WP_REST_Request $request)
 		{
-			$error = self::wsc_scan_validate_request($request);
+			$error = self::wsc_scan_validate_request( $request,'scan' );
 			$is_valid_request = empty($error); // if the array is empty, the request is valid
 
 			if (!$is_valid_request) { // if the array is not empty, contains an error and the request is invalid
@@ -64,7 +102,7 @@ if (!class_exists("cmplz_wsc_api")) {
 			// start the processing of the request
 			$result = json_decode($request->get_body());
 
-			if (!$result->data->result->trackers || count($result->data->result->trackers) === 0) {
+			if (!isset($result->data->result->trackers) || !is_array($result->data->result->trackers) || count($result->data->result->trackers) === 0) {
 				return new WP_REST_Response('No cookies found in the result.', 200);
 			}
 
@@ -74,8 +112,7 @@ if (!class_exists("cmplz_wsc_api")) {
 				return new WP_REST_Response('Scan already completed.', 200);
 			}
 
-			update_option('cmplz_wsc_scan_status', 'completed', false);
-			COMPLIANZ::$wsc_scanner->wsc_scan_store_cookies($result->data->result->trackers);
+			COMPLIANZ::$wsc_scanner->wsc_complete_cookie_scan( $result, true );
 
 			return new WP_REST_Response('Cookies updated!', 200);
 
@@ -90,7 +127,7 @@ if (!class_exists("cmplz_wsc_api")) {
 		 * @param WP_REST_Request $request The REST API request object.
 		 * @return array If the request is invalid an array containing the error details, otherwise an empty array.
 		 */
-		public static function wsc_scan_validate_request(WP_REST_Request $request): array
+		public static function wsc_scan_validate_request(WP_REST_Request $request, $type): array
 		{
 			// check the body
 			if (empty($request->get_body())) {
@@ -102,8 +139,8 @@ if (!class_exists("cmplz_wsc_api")) {
 			}
 
 			// Get options for permission check
-			$scan_id = get_option('cmplz_wsc_scan_id', false);
-			$scan_created_at = get_option('cmplz_wsc_scan_createdAt', false);
+			$scan_id = $type === 'scan' ? get_option('cmplz_wsc_scan_id', false) : get_option('cmplz_wsc_checks_scan_id',false);
+			$scan_created_at = $type === 'scan' ? get_option('cmplz_wsc_scan_createdAt', false) : get_option('cmplz_wsc_checks_scan_createdAt',false);
 			// Check if there is an active scan
 			if (!$scan_id || !$scan_created_at) {
 				return [
